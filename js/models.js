@@ -76,7 +76,7 @@ class StoryList {
 
   async addStory(user, newStory) {
     // UNIMPLEMENTED: complete this function!
-    const url = `${BASE_URL}/stories`
+    const url = `${BASE_URL}/stories`;
     const data = {
       token: user.loginToken,
       story: {
@@ -84,15 +84,15 @@ class StoryList {
         title: newStory.title,
         url: newStory.url
       }
-    }
+    };
 
-    const response = await axios.post(url, data)
-    console.log(response);
+    const response = await axios.post(url, data);
+    // console.log(response);
 
     const story = new Story(response.data.story.storyId, response.data.story.title, response.data.story.author,
-      response.data.story.url, response.data.story.username, response.data.story.createdAt)
+      response.data.story.url, response.data.story.username, response.data.story.createdAt);
 
-      console.log(story);
+    // console.log(story);
 
     this.stories.push(story);
     return story;
@@ -111,13 +111,13 @@ class User {
    */
 
   constructor({
-                username,
-                name,
-                createdAt,
-                favorites = [],
-                ownStories = []
-              },
-              token) {
+    username,
+    name,
+    createdAt,
+    favorites = [],
+    ownStories = []
+  },
+    token) {
     this.username = username;
     this.name = name;
     this.createdAt = createdAt;
