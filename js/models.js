@@ -209,4 +209,29 @@ class User {
       return null;
     }
   }
+
+  // https://hack-or-snooze-v3.herokuapp.com/users/username/favorites/storyId
+  // will send a axios.post() request that includes username and story id of favorited
+  // use the response to add 
+
+  /** Add story to user's favorites when favorited */
+  async addFavorite(story) {
+    await axios.post(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
+    {token: this.loginToken});
+
+    //  this.favorites = [...response.data.user.favorites];
+    // this.favorites.unshift(response.data.user.favorites[response.data.user.favorites.length -1]);
+    this.favorites.unshift(story);
+
+  }
+
+  /** Remove story from user's favorites when unfavorited */
+  async removeFavorite(story) {
+    await axios.delete(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
+    {data: {token: this.loginToken}});
+
+    // this.favorites.splice(this.favorites.indexOf(story), 1);
+
+    this.favorites.splice(this.favorites.findIndex(e => e.storyId === story.storyId), 1);
+  }
 }
