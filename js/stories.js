@@ -8,7 +8,7 @@ let storyList;
 async function getAndShowStoriesOnStart() {
   storyList = await StoryList.getStories();
   $storiesLoadingMsg.remove();
- // addStory(user, newStory)
+
   putStoriesOnPage();
 }
 
@@ -20,9 +20,8 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
-  // console.debug("generateStoryMarkup", story);
 
-  const hostName = story.getHostName();
+  const hostName = story.getHostName(story.url);
   return $(`
       <li id="${story.storyId}">
         <a href="${story.url}" target="a_blank" class="story-link">
@@ -50,3 +49,20 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+/** addStoryToPage:  adds new story to page using form inputs */
+
+async function addStoryToPage(evt) {
+  evt.preventDefault();
+
+  const author = $('#create-author').val();
+  const title = $('#create-title').val();
+  const url = $('#create-url').val();
+
+  const story = await storyList.addStory(currentUser, { author, title, url });
+
+  $allStoriesList.prepend(generateStoryMarkup(story));
+  $navSubmit.css({ 'display': 'hidden' });
+}
+
+$newStoryForm.on('submit', addStoryToPage);
