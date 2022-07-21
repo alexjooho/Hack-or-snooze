@@ -8,7 +8,7 @@ let storyList;
 async function getAndShowStoriesOnStart() {
   storyList = await StoryList.getStories();
   $storiesLoadingMsg.remove();
-
+ // addStory(user, newStory)
   putStoriesOnPage();
 }
 
