@@ -3,11 +3,18 @@
 .stories-list {
   margin: 20px 5px;
 }
-
+  /* List item */
 .stories-list > li {
   color: gray;
   font-size: 0.8rem;
-  margin: 10px 0;
+  margin-bottom: .25rem;
+  padding: .5rem 0;
+
+}
+
+.stories-list > li:nth-child(even) {
+  background-color: bisque;
+  border-bottom: .5px solid rgb(189, 189, 189);
 }
 
 #stories-loading-msg {
@@ -23,7 +30,7 @@
   color: black;
   font-size: 0.85rem;
   font-weight: normal;
-  margin: 18px 0;
+  /* margin-bottom: 1rem; */
 }
 
 .story-link:hover {
@@ -36,9 +43,20 @@
 
 .story-user {
   display: block;
+  margin-left: 2.25em;
 }
 
 .star > i {
   cursor: pointer;
+  padding: 0 .25rem
 }
+
+.story-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 1rem;
+}
+
+
 

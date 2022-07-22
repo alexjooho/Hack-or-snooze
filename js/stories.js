@@ -36,7 +36,8 @@ function generateStoryMarkup(story) {
   //  because the actual string doesn't include the quotes
   return $(`
       <li id="${story.storyId}">
-      <span class="star">
+      <div class="story-top-row">
+      <div> <span class="star">
       <i class="${icon}"></i>
       </span>
         <a href="${story.url}" target="a_blank" class="story-link">
@@ -44,12 +45,17 @@ function generateStoryMarkup(story) {
         </a>
         <small class="story-hostname">(${hostName})</small>
         <small class="story-author">by ${story.author}</small>
-        <small class="story-user">posted by ${story.username}</small>
+        <small class="story-user">posted by ${story.username}</small></div>
+      <div> <span><i class="bi bi-trash3-fill"></i></span></div>
+
+
+        </div>
+
+
       </li>
     `);
 }
-
-
+// <small class="story-user">posted by ${story.username}</small>
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
@@ -99,7 +105,7 @@ function toggleFavoriteIcon(evt) {
   //   // return false;
   // }
 
-  $(evt.target).toggleClass("bi-heart bi-heart-fill")
+  $(evt.target).toggleClass("bi-heart bi-heart-fill");
 }
 
 /** favoriteClickHandler: handles clicking the favorite icon  */
@@ -113,7 +119,7 @@ async function favoriteClickHandler(evt) {
   // If true, need to add to data, else take away from data
 
   const isNotFavorite = currentUser.isStoryInFavorites(story);
-  console.log(isNotFavorite);
+  // console.log(isNotFavorite);
   if (!isNotFavorite) {
     await currentUser.addFavorite(story);
   } else {
