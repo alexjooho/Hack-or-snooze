@@ -111,6 +111,6 @@ function updateUIOnUserLogin() {
   console.debug("updateUIOnUserLogin");
 
   $allStoriesList.show();
-
+  $("section.account-forms-container").hide();
   updateNavOnLogin();
 }

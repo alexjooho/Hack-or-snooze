@@ -20,12 +20,12 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
-
+  // heart-fill class
   const hostName = story.getHostName(story.url);
   return $(`
       <li id="${story.storyId}">
       <span class="star">
-        <i class="far fa-star"></i>
+      <i class="bi bi-heart"></i>
       </span>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
