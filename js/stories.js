@@ -80,7 +80,7 @@ $newStoryForm.on('submit', addStoryToPage);
 
 /** toggleFavoriteIcon: toggles the favorite icon state
  *  between solid and outline */
-
+// try toggleClass
 function toggleFavoriteIcon(evt) {
   if ($(evt.target).hasClass('bi-heart')) {
     $(evt.target).attr('class', 'bi bi-heart-fill');
@@ -97,16 +97,17 @@ function toggleFavoriteIcon(evt) {
 async function favoriteClickHandler(evt) {
 
   const storyId = $(evt.target).closest('li').attr('id');
-
+  // no ned to pass storylist
   const story = Story.getStoryById(storyList, storyId);
 
   // If true, need to add to data, else take away from data
-  const isNotFavorite = toggleFavoriteIcon(evt);
+
   if (isNotFavorite) {
     await currentUser.addFavorite(story);
   } else {
     await currentUser.removeFavorite(story);
   }
+  const isNotFavorite = toggleFavoriteIcon(evt);
 }
 /** handles clicking on and off a favorite  */
 $('ol.stories-list').on('click', 'i', favoriteClickHandler);
