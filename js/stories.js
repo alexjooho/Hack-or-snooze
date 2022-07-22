@@ -23,7 +23,14 @@ function generateStoryMarkup(story) {
 
   const hostName = story.getHostName(story.url);
 
-  const icon = currentUser.isStoryInFavorites(story) ? "bi bi-heart-fill" : "bi bi-heart";
+  let icon;
+
+  if (currentUser) {
+    icon = currentUser.isStoryInFavorites(story) ? "bi bi-heart-fill" : "bi bi-heart";
+  }
+  else {
+    icon = "bi bi-heart";
+  }
   // need quotes around attribute in html string literal,
   //  because the actual string doesn't include the quotes
   return $(`
@@ -82,14 +89,16 @@ $newStoryForm.on('submit', addStoryToPage);
  *  between solid and outline */
 // try toggleClass
 function toggleFavoriteIcon(evt) {
-  if ($(evt.target).hasClass('bi-heart')) {
-    $(evt.target).attr('class', 'bi bi-heart-fill');
-    return true;
-  }
-  else {
-    $(evt.target).attr('class', 'bi bi-heart');
-    return false;
-  }
+  // if ($(evt.target).hasClass('bi-heart')) {
+  //   $(evt.target).attr('class', 'bi bi-heart-fill');
+  //   // return true;
+  // }
+  // else {
+  //   $(evt.target).attr('class', 'bi bi-heart');
+  //   // return false;
+  // }
+
+  $(evt.target).toggleClass("bi-heart bi-heart-fill")
 }
 
 /** favoriteClickHandler: handles clicking the favorite icon  */
@@ -102,12 +111,15 @@ async function favoriteClickHandler(evt) {
 
   // If true, need to add to data, else take away from data
 
-  if (isNotFavorite) {
+  const isNotFavorite = currentUser.isStoryInFavorites(story);
+  console.log(isNotFavorite);
+  if (!isNotFavorite) {
     await currentUser.addFavorite(story);
   } else {
     await currentUser.removeFavorite(story);
   }
-  const isNotFavorite = toggleFavoriteIcon(evt);
+
+  toggleFavoriteIcon(evt);
 }
 /** handles clicking on and off a favorite  */
 $('ol.stories-list').on('click', 'i', favoriteClickHandler);

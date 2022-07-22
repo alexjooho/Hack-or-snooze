@@ -30,10 +30,13 @@ class Story {
   /** getStoryById:  returns Story instance, from a StoryList object
    * and Story id
     */
-  static getStoryById(storyList, id) {
+  static getStoryById(storyList, storyId) {  // it makes us need a storyList parameter
     console.log(storyList.stories);
-    return storyList.stories.find(story => story.storyId === id);
+    return storyList.stories.find(story => story.storyId === storyId);
   }
+
+  // this is to get a story by using a given id and searching through the storyList
+  // variable data
 }
 
 
@@ -226,6 +229,9 @@ class User {
     await axios.post(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
       { token: this.loginToken });
 
+      // could've done axios() and just added method to make it so we don't need
+      // two functions for post and delete
+
     //  this.favorites = [...response.data.user.favorites];
     // this.favorites.unshift(response.data.user.favorites[response.data.user.favorites.length -1]);
     this.favorites.unshift(story);
@@ -237,29 +243,31 @@ class User {
     await axios.delete(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
       { data: { token: this.loginToken } });   // needed the extra data: syntax for axios.delete()
 
-    this.favorites.splice(this.favorites.indexOf(story), 1);  // both versions work
+    this.favorites = this.favorites.filter(e => e.storyId !== story.storyId);
+
+    //this.favorites.splice(this.favorites.indexOf(story), 1);  // both versions work
 
     // this.favorites.splice(this.favorites.findIndex(e => e.storyId === story.storyId), 1);
+    // we should use .filter() instead
+
+    // we could technically just use the data from the API as our favorites list,
+    // since it returns the data with the user and its properties
   }
 
   isStoryInFavorites(story) {
-    for (let fav of this.favorites) {
-      if (fav.storyId === story.storyId) return true;
-    }
-    return false;
-    // TODO:WHY doesn't this work?
+    return this.favorites.some(x => x.storyId === story.storyId);
+
+    // for (let fav of this.favorites) {
+    //  if (fav.storyId === story.storyId) return true;
+    // }
+    // we could use some() instead
+
+    // return false;
+    
+    // WHY doesn't this work?
     // return this.favorites.includes(story);
+    // because it is looking for an object with a different reference point
+    // this.favorites.indexOf(story) worked because in our addFavorite, we unshifted
+      // reference to object
   }
 }
-
-/*
-
-
-
-  TODO: add the favorites tab/button to the navbar
-
-  TODO: show favorites list when favorites tab/button is clicked
-          and hide everything else
-
-  TODO: may want to add a static method to the Story class to get an arbitrary story by ID
-*/
