@@ -22,15 +22,18 @@ async function getAndShowStoriesOnStart() {
 function generateStoryMarkup(story) {
 
   const hostName = story.getHostName(story.url);
-
+  let trashIcon;
   let icon;  // had to add icons for if there are no current users
   // could also put the generating icon logic into another function
 
   if (currentUser) {
     icon = currentUser.isStoryInFavorites(story) ? "bi bi-heart-fill" : "bi bi-heart";
+    trashIcon = currentUser.isOwnStory(story) ? '<div> <span><i class="bi bi-trash3-fill"></i></span></div>' : '';
+
   }
   else {
     icon = "bi bi-heart";
+    trashIcon = "";
   }
   // need quotes around attribute in html string literal,
   //  because the actual string doesn't include the quotes
@@ -46,7 +49,7 @@ function generateStoryMarkup(story) {
         <small class="story-hostname">(${hostName})</small>
         <small class="story-author">by ${story.author}</small>
         <small class="story-user">posted by ${story.username}</small></div>
-      <div> <span><i class="bi bi-trash3-fill"></i></span></div>
+     ${trashIcon}
 
 
         </div>
@@ -55,7 +58,7 @@ function generateStoryMarkup(story) {
       </li>
     `);
 }
-// <small class="story-user">posted by ${story.username}</small>
+// <div> <span><i class="bi bi-trash3-fill"></i></span></div>
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 

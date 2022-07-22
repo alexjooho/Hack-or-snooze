@@ -1,5 +1,5 @@
 "use strict";
-
+// TODO: hide delete and trash icons if not logged in
 const BASE_URL = "https://hack-or-snooze-v3.herokuapp.com";
 
 
@@ -74,6 +74,14 @@ class StoryList {
 
     // build an instance of our own class using the new array of stories
     return new StoryList(stories);
+  }
+  /** remove a story form the serve and reload stories */
+  static async deleteStories(storyId) {
+    //https://hack-or-snooze-v3.herokuapp.com/stories/storyId
+    console.log(currentUser.loginToken);
+    await axios.delete(`${BASE_URL}/stories/${storyId}`,
+      { data: { token: currentUser.loginToken } });   // needed the extra data: syntax for axios.delete()
+    // StoryList.getStories();
   }
 
   /** Adds story data to API, makes a Story instance, adds it to story list.
@@ -229,8 +237,8 @@ class User {
     await axios.post(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
       { token: this.loginToken });
 
-      // could've done axios() and just added method to make it so we don't need
-      // two functions for post and delete
+    // could've done axios() and just added method to make it so we don't need
+    // two functions for post and delete
 
     //  this.favorites = [...response.data.user.favorites];
     // this.favorites.unshift(response.data.user.favorites[response.data.user.favorites.length -1]);
@@ -254,6 +262,8 @@ class User {
     // since it returns the data with the user and its properties
   }
 
+  /** remove story from all stories */
+
   isStoryInFavorites(story) {
     return this.favorites.some(x => x.storyId === story.storyId);
 
@@ -263,11 +273,17 @@ class User {
     // we could use some() instead
 
     // return false;
-    
+
     // WHY doesn't this work?
     // return this.favorites.includes(story);
     // because it is looking for an object with a different reference point
     // this.favorites.indexOf(story) worked because in our addFavorite, we unshifted
-      // reference to object
+    // reference to object
+  }
+  /** check if story is on ownStories array return bool */
+  isOwnStory(story) {
+    return this.ownStories.some(x => x.storyId === story.storyId);
+
+
   }
 }
