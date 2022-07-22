@@ -27,6 +27,13 @@ class Story {
   getHostName(url) {
     return new URL(url).hostname;
   }
+  /** getStoryById:  returns Story instance, from a StoryList object
+   * and Story id
+    */
+  static getStoryById(storyList, id) {
+    console.log(storyList.stories);
+    return storyList.stories.find(story => story.storyId === id);
+  }
 }
 
 
@@ -212,12 +219,12 @@ class User {
 
   // https://hack-or-snooze-v3.herokuapp.com/users/username/favorites/storyId
   // will send a axios.post() request that includes username and story id of favorited
-  // use the response to add 
+  // use the response to add
 
   /** Add story to user's favorites when favorited */
   async addFavorite(story) {
     await axios.post(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
-    {token: this.loginToken});
+      { token: this.loginToken });
 
     //  this.favorites = [...response.data.user.favorites];
     // this.favorites.unshift(response.data.user.favorites[response.data.user.favorites.length -1]);
@@ -228,18 +235,26 @@ class User {
   /** Remove story from user's favorites when unfavorited */
   async removeFavorite(story) {
     await axios.delete(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
-    {data: {token: this.loginToken}});   // needed the extra data: syntax for axios.delete()
+      { data: { token: this.loginToken } });   // needed the extra data: syntax for axios.delete()
 
     this.favorites.splice(this.favorites.indexOf(story), 1);  // both versions work
 
     // this.favorites.splice(this.favorites.findIndex(e => e.storyId === story.storyId), 1);
   }
+
+  isStoryInFavorites(story) {
+    for (let fav of this.favorites) {
+      if (fav.storyId === story.storyId) return true;
+    }
+    return false;
+    // TODO:WHY doesn't this work?
+    // return this.favorites.includes(story);
+  }
 }
 
-/* TODO: add star icon on generateStoryMarkup on stories.js (line 22)
+/*
 
-  TODO: figure out which icons have been clicked (parent's id) 
-          change icon when clicked/not clicked
+
 
   TODO: add the favorites tab/button to the navbar
 

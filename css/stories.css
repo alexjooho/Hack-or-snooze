@@ -37,3 +37,8 @@
 .story-user {
   display: block;
 }
+
+.star > i {
+  cursor: pointer;
+}
+

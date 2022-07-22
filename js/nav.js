@@ -46,6 +46,29 @@ function navSubmitClick() {
 $navSubmit.on('click', navSubmitClick);
 
 
+/** navFavoritesClick: shows favorites list hide */
+function navFavoritesClick(evt) {
+  hidePageComponents();
+  putFavoritesStoriesOnPage();
+}
 
+/** Gets list of current user favorites and populates DOM. */
+
+function putFavoritesStoriesOnPage() {
+
+  $favStoriesList.empty();
+
+  // loop through all of our stories and generate HTML for them
+  for (let story of currentUser.favorites) {
+    const $story = generateStoryMarkup(story);
+    $favStoriesList.append($story);
+  }
+
+  $favStoriesList.show();
+}
+
+/**navFavoritesClick listener */
+
+$navFavorites.on('click', navFavoritesClick);
 
 

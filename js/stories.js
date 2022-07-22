@@ -20,12 +20,16 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
-  // heart-fill class
+
   const hostName = story.getHostName(story.url);
+
+  const icon = currentUser.isStoryInFavorites(story) ? "bi bi-heart-fill" : "bi bi-heart";
+  // need quotes around attribute in html string literal,
+  //  because the actual string doesn't include the quotes
   return $(`
       <li id="${story.storyId}">
       <span class="star">
-      <i class="bi bi-heart"></i>
+      <i class="${icon}"></i>
       </span>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
@@ -36,6 +40,8 @@ function generateStoryMarkup(story) {
       </li>
     `);
 }
+
+
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
@@ -69,3 +75,42 @@ async function addStoryToPage(evt) {
 }
 
 $newStoryForm.on('submit', addStoryToPage);
+
+
+
+/** toggleFavoriteIcon: toggles the favorite icon state
+ *  between solid and outline */
+
+function toggleFavoriteIcon(evt) {
+  if ($(evt.target).hasClass('bi-heart')) {
+    $(evt.target).attr('class', 'bi bi-heart-fill');
+    return true;
+  }
+  else {
+    $(evt.target).attr('class', 'bi bi-heart');
+    return false;
+  }
+}
+
+/** favoriteClickHandler: handles clicking the favorite icon  */
+
+async function favoriteClickHandler(evt) {
+
+  const storyId = $(evt.target).closest('li').attr('id');
+
+  const story = Story.getStoryById(storyList, storyId);
+
+  // If true, need to add to data, else take away from data
+  const isNotFavorite = toggleFavoriteIcon(evt);
+  if (isNotFavorite) {
+    await currentUser.addFavorite(story);
+  } else {
+    await currentUser.removeFavorite(story);
+  }
+}
+/** handles clicking on and off a favorite  */
+$('ol.stories-list').on('click', 'i', favoriteClickHandler);
+
+
+
+
