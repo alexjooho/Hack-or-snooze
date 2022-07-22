@@ -228,10 +228,23 @@ class User {
   /** Remove story from user's favorites when unfavorited */
   async removeFavorite(story) {
     await axios.delete(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
-    {data: {token: this.loginToken}});
+    {data: {token: this.loginToken}});   // needed the extra data: syntax for axios.delete()
 
-    // this.favorites.splice(this.favorites.indexOf(story), 1);
+    this.favorites.splice(this.favorites.indexOf(story), 1);  // both versions work
 
-    this.favorites.splice(this.favorites.findIndex(e => e.storyId === story.storyId), 1);
+    // this.favorites.splice(this.favorites.findIndex(e => e.storyId === story.storyId), 1);
   }
 }
+
+/* TODO: add star icon on generateStoryMarkup on stories.js (line 22)
+
+  TODO: figure out which icons have been clicked (parent's id) 
+          change icon when clicked/not clicked
+
+  TODO: add the favorites tab/button to the navbar
+
+  TODO: show favorites list when favorites tab/button is clicked
+          and hide everything else
+
+  TODO: may want to add a static method to the Story class to get an arbitrary story by ID
+*/
