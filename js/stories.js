@@ -23,7 +23,8 @@ function generateStoryMarkup(story) {
 
   const hostName = story.getHostName(story.url);
 
-  let icon;
+  let icon;  // had to add icons for if there are no current users
+  // could also put the generating icon logic into another function
 
   if (currentUser) {
     icon = currentUser.isStoryInFavorites(story) ? "bi bi-heart-fill" : "bi bi-heart";
